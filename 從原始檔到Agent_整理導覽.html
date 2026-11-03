@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>素菁資料整理導覽</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Noto+Serif+TC:wght@600;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f5f2ec; --surface: #fffdf9; --ink: #1c2220; --muted: #6b706b; --faint: #9a9d97; --line: #e4dfd4;
+  --use: #2e6e5c; --use-soft: #e2eee8;
+  --ref: #3c689b; --ref-soft: #e3ebf4;
+  --hold: #a39d91; --hold-soft: #eeebe4;
+  --lock: #b67d22; --lock-soft: #f5ead8;
+  --ivy: #7a5a93; --ivy-soft: #ede6f2;
+  --ext: #8a6a4a;
+  --agent: #1c2220; --on-agent: #fffdf9;
+  --shadow: 0 1px 2px rgba(28,34,32,.04), 0 12px 32px rgba(28,34,32,.06);
+  --serif: "Noto Serif TC", "Songti TC", "PMingLiU", serif;
+  --sans: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #151918; --surface: #1d2321; --ink: #ece8e0; --muted: #a3a69f; --faint: #767a74; --line: #2f3633;
+    --use: #6fb59c; --use-soft: #20352e; --ref: #7ea6d6; --ref-soft: #1f2b3a;
+    --hold: #8d887e; --hold-soft: #2a2b28; --lock: #dba750; --lock-soft: #3a2f1c;
+    --ivy: #b391cc; --ivy-soft: #2e2536; --ext: #c29d78;
+    --agent: #ece8e0; --on-agent: #151918;
+    --shadow: 0 1px 2px rgba(0,0,0,.2), 0 12px 32px rgba(0,0,0,.25);
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #151918; --surface: #1d2321; --ink: #ece8e0; --muted: #a3a69f; --faint: #767a74; --line: #2f3633;
+  --use: #6fb59c; --use-soft: #20352e; --ref: #7ea6d6; --ref-soft: #1f2b3a;
+  --hold: #8d887e; --hold-soft: #2a2b28; --lock: #dba750; --lock-soft: #3a2f1c;
+  --ivy: #b391cc; --ivy-soft: #2e2536; --ext: #c29d78;
+  --agent: #ece8e0; --on-agent: #151918;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 16px/1.7 var(--sans); -webkit-font-smoothing: antialiased; }
+a { color: inherit; }
+h1, h2, h3, p { margin: 0; }
+.num { font-variant-numeric: tabular-nums; }
+.wrap { width: min(1080px, calc(100% - 32px)); margin-inline: auto; }
+
+/* nav */
+.nav { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 56px; gap: 16px; }
+.brand { font-family: var(--serif); font-weight: 900; font-size: 17px; letter-spacing: .04em; white-space: nowrap; }
+.nav-links { display: flex; gap: 2px; overflow-x: auto; scrollbar-width: none; }
+.nav-links a { text-decoration: none; color: var(--muted); font-size: 14px; padding: 6px 12px; border-radius: 99px; white-space: nowrap; }
+.nav-links a:hover { color: var(--ink); background: var(--surface); }
+
+/* hero */
+.hero { padding: 72px 0 40px; }
+.kicker { font-size: 13px; letter-spacing: .2em; color: var(--muted); }
+.hero h1 { font-family: var(--serif); font-weight: 900; font-size: clamp(34px, 5.4vw, 60px); line-height: 1.2; letter-spacing: .01em; margin: 14px 0 0; }
+.hero h1 em { font-style: normal; color: var(--use); }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 48px; border-top: 1px solid var(--ink); }
+.stat { padding: 20px 24px 0 0; }
+.stat + .stat { padding-left: 24px; border-left: 1px solid var(--line); }
+.stat b { display: block; font-family: var(--serif); font-size: clamp(36px, 5vw, 54px); font-weight: 900; line-height: 1.1; }
+.stat span { color: var(--muted); font-size: 14px; }
+
+.split { margin-top: 44px; }
+.split-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 14px; color: var(--muted); margin-bottom: 10px; }
+.split-head strong { color: var(--ink); font-weight: 700; }
+.bar { display: flex; height: 18px; border-radius: 4px; overflow: hidden; gap: 2px; }
+.bar i { display: block; min-width: 3px; }
+.legend { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 14px; }
+.legend div { font-size: 14px; color: var(--muted); line-height: 1.5; }
+.legend b { display: block; color: var(--ink); font-size: 20px; font-weight: 700; }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 7px; vertical-align: 1px; }
+
+.facts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 44px; }
+.fact { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 18px 20px; font-size: 15px; line-height: 1.6; }
+.fact b { display: block; font-size: 13px; color: var(--muted); font-weight: 500; margin-bottom: 4px; }
+
+/* sections */
+section.block { padding: 76px 0 0; scroll-margin-top: 56px; }
+.sec-no { font-family: var(--serif); font-weight: 900; color: var(--faint); font-size: 15px; letter-spacing: .1em; }
+.sec-title { font-family: var(--serif); font-weight: 900; font-size: clamp(26px, 3.4vw, 36px); line-height: 1.3; margin-top: 6px; }
+.sec-lead { color: var(--muted); margin-top: 8px; font-size: 15px; max-width: 640px; }
+
+/* sankey */
+.flow-card { margin-top: 28px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 20px 8px 8px; }
+.flow-scroll { overflow-x: auto; }
+.ov-wrap { min-width: 900px; background: #f5f2ec; border-radius: 10px; }
+#ov, .ovz { display: block; width: 100%; height: auto; fill: #1c2220; }
+#ov text, .ovz text { font-family: "Noto Sans TC", "Microsoft JhengHei", sans-serif; }
+#ov .serif, .ovz .serif { font-family: "Noto Serif TC", "Microsoft JhengHei", serif; font-weight: 900; }
+#ov .muted, .ovz .muted { fill: #474d48; }
+#ov .faint, .ovz .faint { fill: #5f645f; }
+.ov-dl { text-align: right; padding: 4px 12px 0; font-size: 13.5px; }
+.ov-dl a, .ov-dl button { color: var(--muted); font: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; }
+.ov-wrap { cursor: zoom-in; }
+.flow-card.wide { width: min(1440px, calc(100vw - 32px)); position: relative; left: 50%; transform: translateX(-50%); }
+.zoom { position: fixed; inset: 0; z-index: 50; background: rgba(20,24,22,.86); overflow: auto; display: none; padding: 56px 24px 24px; cursor: zoom-out; }
+.zoom.on { display: block; }
+.zoom .ov-wrap { width: 1800px; min-width: 1800px; margin: 0 auto; cursor: zoom-out; }
+.zoom-x { position: fixed; top: 12px; right: 18px; z-index: 51; color: #fff; background: none; border: 1px solid rgba(255,255,255,.4); border-radius: 99px; padding: 4px 14px; font: inherit; font-size: 14px; cursor: pointer; display: none; }
+.zoom.on + .zoom-x { display: block; }
+.flow-hint { display: none; text-align: center; font-size: 12px; color: var(--faint); padding: 4px 0 6px; }
+.flow-notes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--line); margin: 14px 12px 6px; }
+.flow-notes div { padding: 14px 14px 6px 0; font-size: 14px; color: var(--muted); line-height: 1.6; }
+.flow-notes div + div { padding-left: 14px; border-left: 1px solid var(--line); }
+.flow-notes b { color: var(--ink); }
+
+/* categories */
+.cats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: 28px; }
+.cat { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 26px 26px 22px; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+.cat::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 5px; background: var(--c); }
+.cat-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.cat h3 { font-size: 21px; font-weight: 700; }
+.cat .tag { display: inline-block; font-size: 12.5px; font-weight: 700; color: var(--c); background: var(--cs); border-radius: 99px; padding: 2px 10px; margin-top: 6px; }
+.cat .big { text-align: right; font-family: var(--serif); font-weight: 900; font-size: 38px; line-height: 1; color: var(--c); }
+.cat .big small { display: block; font-family: var(--sans); font-size: 12px; font-weight: 500; color: var(--muted); margin-top: 6px; }
+.cat .what { margin-top: 16px; font-size: 16px; line-height: 1.65; }
+.cat .label { font-size: 12px; letter-spacing: .14em; color: var(--faint); margin: 18px 0 8px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips span { font-size: 13.5px; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 3px 10px; }
+.next { margin-top: auto; padding-top: 16px; font-size: 14px; color: var(--muted); }
+.next::before { content: "→ "; color: var(--c); font-weight: 700; }
+.cat .next-wrap { margin-top: auto; }
+.mini { display: grid; gap: 7px; }
+.mini-row { display: grid; grid-template-columns: 7.5em 1fr 3.4em; align-items: center; gap: 10px; font-size: 13.5px; }
+.mini-row .track { height: 8px; background: var(--bg); border-radius: 99px; overflow: hidden; }
+.mini-row .track i { display: block; height: 100%; background: var(--c); border-radius: 99px; }
+.mini-row .n { text-align: right; font-weight: 700; }
+.split2 { display: flex; height: 10px; border-radius: 99px; overflow: hidden; gap: 2px; margin-top: 4px; }
+.split2-l { display: flex; justify-content: space-between; font-size: 13px; color: var(--muted); margin-top: 6px; gap: 8px; }
+.split2-l b { color: var(--ink); }
+
+/* agents */
+.agents { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 16px; margin-top: 28px; }
+.agent { background: var(--agent); color: var(--on-agent); border-radius: 18px; padding: 26px; display: flex; flex-direction: column; }
+.agent .k { font-size: 12px; letter-spacing: .16em; opacity: .6; }
+.agent h3 { font-size: 21px; margin-top: 4px; }
+.agent .big { font-family: var(--serif); font-weight: 900; font-size: 56px; line-height: 1.05; margin-top: 18px; }
+.agent .big small { font-family: var(--sans); font-size: 15px; font-weight: 500; opacity: .65; margin-left: 4px; }
+.agent .comp { display: flex; height: 8px; border-radius: 99px; overflow: hidden; gap: 2px; margin-top: 18px; }
+.agent ul { list-style: none; padding: 0; margin: 12px 0 0; font-size: 14px; display: grid; gap: 5px; }
+.agent li { display: flex; align-items: center; gap: 2px; }
+.agent li .n { margin-left: auto; font-weight: 700; }
+.agent .path { margin-top: auto; padding-top: 22px; font-size: 12.5px; opacity: .65; line-height: 1.5; word-break: break-all; }
+.agent .open { display: inline-flex; margin-top: 10px; align-self: flex-start; font-size: 13.5px; font-weight: 700; text-decoration: none; border: 1px solid color-mix(in srgb, var(--on-agent) 35%, transparent); border-radius: 99px; padding: 5px 14px; }
+.agent .open:hover { background: color-mix(in srgb, var(--on-agent) 12%, transparent); }
+.warn { margin-top: 16px; display: flex; gap: 14px; align-items: flex-start; background: var(--lock-soft); border-radius: 14px; padding: 16px 20px; font-size: 15px; line-height: 1.65; }
+.warn .ic { flex: none; width: 24px; height: 24px; border-radius: 50%; background: var(--lock); color: var(--surface); display: grid; place-items: center; font-weight: 900; font-size: 14px; margin-top: 2px; }
+
+/* tree */
+.tree { margin-top: 28px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); padding: 10px 0; }
+.t-root { padding: 14px 26px 10px; font-size: 13px; color: var(--muted); word-break: break-all; }
+.t-root b { color: var(--ink); font-size: 15px; }
+.t-item { border-top: 1px solid var(--line); }
+.t-item > summary { list-style: none; display: grid; grid-template-columns: 34px minmax(0, 1fr) auto 22px; gap: 14px; align-items: center; padding: 16px 26px; cursor: pointer; }
+.t-item > summary::-webkit-details-marker { display: none; }
+.t-item > summary:hover { background: color-mix(in srgb, var(--bg) 60%, transparent); }
+.t-ico { width: 34px; height: 34px; border-radius: 9px; display: grid; place-items: center; background: var(--cs); color: var(--c); font-weight: 900; font-size: 13px; font-family: var(--serif); }
+.t-name { font-weight: 700; font-size: 16px; word-break: break-all; }
+.t-name small { display: block; font-weight: 400; color: var(--muted); font-size: 14px; margin-top: 1px; }
+.t-star { display: inline-block; font-size: 11.5px; font-weight: 700; color: var(--surface); background: var(--use); border-radius: 99px; padding: 1px 9px; margin-left: 8px; vertical-align: 2px; }
+.t-count { font-weight: 700; color: var(--c); white-space: nowrap; font-size: 15px; }
+.t-arrow { color: var(--faint); transition: transform .2s; font-size: 14px; }
+.t-item[open] .t-arrow { transform: rotate(90deg); }
+.t-body { padding: 0 26px 18px 74px; }
+.t-sub { display: grid; grid-template-columns: minmax(0, 15em) minmax(0, 1fr) 4.5em; gap: 4px 16px; align-items: center; padding: 9px 0; border-top: 1px dashed var(--line); font-size: 14.5px; }
+.t-sub:first-child { border-top: 0; }
+.t-sub .nm { font-weight: 700; word-break: break-all; }
+.t-sub .nm a { text-decoration: none; }
+.t-sub .nm a:hover { text-decoration: underline; color: var(--c); }
+.t-sub .ds { color: var(--muted); font-size: 13.5px; }
+.t-sub .ct { text-align: right; font-weight: 700; }
+.t-sub .tr { grid-column: 1 / -1; height: 4px; background: var(--bg); border-radius: 99px; overflow: hidden; margin-top: 2px; }
+.t-sub .tr i { display: block; height: 100%; background: var(--c); opacity: .75; }
+.t-sub.indent { padding-left: 1.2em; font-size: 14px; }
+.t-sub.indent .nm { font-weight: 500; }
+.t-open { display: inline-block; margin-top: 10px; font-size: 13.5px; font-weight: 700; color: var(--c); text-decoration: none; }
+.t-open:hover { text-decoration: underline; }
+
+footer { padding: 72px 0 60px; color: var(--muted); font-size: 13.5px; line-height: 1.8; }
+footer a { color: var(--ink); }
+
+@media (max-width: 880px) {
+  .cats, .agents { grid-template-columns: 1fr; }
+  .facts { grid-template-columns: 1fr; }
+  .legend { grid-template-columns: repeat(2, 1fr); }
+  .flow-hint { display: block; }
+  .flow-notes { grid-template-columns: 1fr; }
+  .flow-notes div + div { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
+}
+@media (max-width: 600px) {
+  .hero { padding-top: 44px; }
+  .stats { grid-template-columns: 1fr; }
+  .stat, .stat + .stat { padding: 16px 0; border-left: 0; border-bottom: 1px solid var(--line); display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .stat b { font-size: 34px; }
+  .brand { font-size: 15px; }
+  .nav-links a { padding: 6px 8px; font-size: 13px; }
+  .cat { padding: 22px 20px 20px; }
+  .t-item > summary { padding: 14px 16px; grid-template-columns: 30px minmax(0,1fr) auto 14px; gap: 10px; }
+  .t-ico { width: 30px; height: 30px; }
+  .t-body { padding: 0 16px 16px 16px; }
+  .t-sub { grid-template-columns: minmax(0,1fr) auto; }
+  .t-sub .ds { grid-column: 1 / -1; grid-row: 2; }
+  .t-sub .ct { grid-row: 1; grid-column: 2; }
+}
+@media print { .nav { display: none; } .t-item { break-inside: avoid; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap">
+    <div class="brand">素菁・資料整理導覽</div>
+    <div class="nav-links">
+      <a href="#flow">一張圖看懂</a>
+      <a href="#cats">四種分類</a>
+      <a href="#agents">三個 Agent</a>
+      <a href="#tree">資料夾</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero wrap">
+  <div class="kicker">2026・11・03　整理結果</div>
+  <h1>3,554 份原始檔，<br>逐份看過、分成四類，<br>挑出可用的放進 <em>3 個 Agent</em>。</h1>
+
+  <div class="stats">
+    <div class="stat"><b class="num">3,554</b><span>D 槽原始檔（原檔沒動）</span></div>
+    <div class="stat"><b class="num">＋150</b><span>Ivy 另外提供的新來源</span></div>
+    <div class="stat"><b class="num">3</b><span>個 Agent：教育訓練／講綱／邀課申請</span></div>
+  </div>
+
+  <div class="split">
+    <div class="split-head"><span><strong>D 槽 3,554 份</strong>　每一份只分到一類</span><span>依份數比例</span></div>
+    <div class="bar" id="heroBar"></div>
+    <div class="legend" id="heroLegend"></div>
+  </div>
+
+  <div class="facts">
+    <div class="fact"><b>原檔安全嗎？</b>D 槽原檔一份都沒搬動；桌面另有一份完整副本。</div>
+    <div class="fact"><b>要匯入哪些？</b>只要開 <strong>02_直接匯入Agent</strong> 底下三個「供匯入」資料夾。</div>
+    <div class="fact"><b>沒匯入的呢？</b>全部保留在資料夾裡，之後需要隨時可以再挑。</div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="block" id="flow">
+    <div class="sec-no">01</div>
+    <h2 class="sec-title">一張圖看懂全部</h2>
+    <p class="sec-lead">由左到右：原始來源 → 逐份判定分類 → 最後去向。線越粗＝檔案越多。點圖可以放大看。</p>
+    <div class="flow-card wide">
+      <div class="flow-hint">← 左右滑動看完整圖 →</div>
+      <div class="flow-scroll"><div class="ov-wrap"><svg role="img" aria-label="一張圖看懂：D 槽 3,554 份與 Ivy 150 份逐份分類後，流向教育訓練 588、講綱 135、單位邀課申請 2 三個 Agent，其餘 3,056 份保留、30 份等密碼" id="ov" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 1210"><text x="60" y="70" class="serif" font-size="40">素菁資料整理：一張圖看懂</text><text x="60" y="104" font-size="18" class="muted">D 槽 3,554 份原始檔＋Ivy 150 份新來源，逐份判定後，挑出可用的放進 3 個 Agent。線越粗＝檔案越多。</text><text x="1740" y="70" font-size="15" class="faint" text-anchor="end">2026.11.03 依實際資料夾清點</text><text x="230" y="150" font-size="16" font-weight="700" class="faint" text-anchor="middle" letter-spacing="2">① 原始來源</text><text x="800" y="150" font-size="16" font-weight="700" class="faint" text-anchor="middle" letter-spacing="2">② 逐份判定分類（每份只分一類）</text><text x="1480" y="150" font-size="16" font-weight="700" class="faint" text-anchor="middle" letter-spacing="2">③ 最後去向</text><g><path d="M334,178.00000000000003 C437,178.00000000000003 437,182.54 540,182.54 L540,245.45999999999998 C437,245.45999999999998 437,240.92000000000002 334,240.92000000000002 Z" fill="#2e6e5c" opacity="0.4"></path><path d="M334,240.92000000000002 C437,240.92000000000002 437,280.62 540,280.62 L540,339.38 C437,339.38 437,299.68 334,299.68 Z" fill="#3c689b" opacity="0.4"></path><path d="M334,299.68000000000006 C437,299.68000000000006 437,364 540,364 L540,694 C437,694 437,636.1200000000001 334,636.1200000000001 Z" fill="#a39d91" opacity="0.4"></path><path d="M334,636.12 C437,636.12 437,746.05 540,746.05 L540,749.9499999999999 C437,749.9499999999999 437,640.02 334,640.02 Z" fill="#b67d22" opacity="0.4"></path><path d="M334,866.25 C437,866.25 437,836.395 540,836.395 L540,851.605 C437,851.605 437,881.46 334,881.46 Z" fill="#7a5a93" opacity="0.4"></path><path d="M334,881.46 C437,881.46 437,921.855 540,921.855 L540,926.145 C437,926.145 437,885.75 334,885.75 Z" fill="#7a5a93" opacity="0.4"></path><path d="M334,987 C437,987 437,987 540,987 L540,989 C437,989 437,989 334,989 Z" fill="#8a6a4a" opacity="0.4"></path><path d="M334,1051 C437,1051 437,1051 540,1051 L540,1053 C437,1053 437,1053 334,1053 Z" fill="#8a6a4a" opacity="0.4"></path><path d="M1060,181.37 C1175,181.37 1175,179.78 1290,179.78 L1290,242.7 C1175,242.7 1175,244.29000000000002 1060,244.29000000000002 Z" fill="#2e6e5c" opacity="0.4"></path><path d="M1060,244.29 C1175,244.29 1175,315.225 1290,315.225 L1290,317.3539269051322 C1175,317.3539269051322 1175,246.63 1060,246.63 Z" fill="#2e6e5c" opacity="0.4"></path><path d="M1060,280.62 C1175,280.62 1175,317.3539269051322 1290,317.3539269051322 L1290,319.3645800933126 C1175,319.3645800933126 1175,282.83 1060,282.83 Z" fill="#3c689b" opacity="0.4"></path><path d="M1060,282.83 C1175,282.83 1175,526 1290,526 L1290,582.55 C1175,582.55 1175,339.38 1060,339.38 Z" fill="#3c689b" opacity="0.2"></path><path d="M1060,364 C1175,364 1175,582.55 1290,582.55 L1290,918.99 C1175,918.99 1175,694 1060,694 Z" fill="#a39d91" opacity="0.2"></path><path d="M1060,746.05 C1175,746.05 1175,899.05 1290,899.05 L1290,902.9499999999999 C1175,902.9499999999999 1175,749.9499999999999 1060,749.9499999999999 Z" fill="#b67d22" opacity="0.4"></path><path d="M1060,830.87 C1175,830.87 1175,242.7 1290,242.7 L1290,256.21999999999997 C1175,256.21999999999997 1175,844.39 1060,844.39 Z" fill="#7a5a93" opacity="0.4"></path><path d="M1060,844.39 C1175,844.39 1175,319.3645800933126 1290,319.3645800933126 L1290,330.95540435458787 C1175,330.95540435458787 1175,857.13 1060,857.13 Z" fill="#7a5a93" opacity="0.4"></path><path d="M1060,921.855 C1175,921.855 1175,918.99 1290,918.99 L1290,923.28 C1175,923.28 1175,926.145 1060,926.145 Z" fill="#a39d91" opacity="0.2"></path><path d="M1060,987 C1175,987 1175,330.95540435458787 1290,330.95540435458787 L1290,332.775 C1175,332.775 1175,989 1060,989 Z" fill="#8a6a4a" opacity="0.4"></path><path d="M1060,1051 C1175,1051 1175,429 1290,429 L1290,431 C1175,431 1175,1053 1060,1053 Z" fill="#8a6a4a" opacity="0.4"></path></g><rect x="320" y="178" width="14" height="462.02000000000004" rx="3" fill="#1c2220"></rect><text x="304" y="405.01" text-anchor="end" font-size="18" font-weight="700"><tspan>D 槽原始檔 </tspan><tspan fill="#1c2220" font-weight="900" font-size="26">3,554</tspan></text><text x="304" y="429.01" text-anchor="end" font-size="14.5" class="muted">原檔沒動，桌面另有完整副本</text><rect x="320" y="866.25" width="14" height="19.5" rx="3" fill="#7a5a93"></rect><text x="304" y="872" text-anchor="end" font-size="18" font-weight="700"><tspan>Ivy 新來源 </tspan><tspan fill="#7a5a93" font-weight="900" font-size="18">150</tspan></text><text x="304" y="896" text-anchor="end" font-size="14.5" class="muted">兩個雲端資料夾</text><rect x="320" y="985" width="14" height="6" rx="3" fill="#8a6a4a"></rect><text x="304" y="994" text-anchor="end" font-size="18" font-weight="700"><tspan>先前提供的講綱 </tspan><tspan fill="#8a6a4a" font-weight="900" font-size="18">2</tspan></text><rect x="320" y="1049" width="14" height="6" rx="3" fill="#8a6a4a"></rect><text x="304" y="1058" text-anchor="end" font-size="18" font-weight="700"><tspan>邀課表單＋回覆 </tspan><tspan fill="#8a6a4a" font-weight="900" font-size="18">2</tspan></text><rect x="60" y="449.01" width="31.184299380979176" height="10" fill="#2e6e5c" rx="1.5"></rect><rect x="92.68429938097918" y="449.01" width="29.02335396736072" height="10" fill="#3c689b" rx="1.5"></rect><rect x="123.2076533483399" y="449.01" width="173.2664603263928" height="10" fill="#a39d91" rx="1.5"></rect><rect x="297.97411367473273" y="449.01" width="2" height="10" fill="#b67d22" rx="1.5"></rect><text x="300" y="479.01" text-anchor="end" font-size="14.5" class="muted">可用 14%・輔助 13%</text><text x="300" y="499.01" text-anchor="end" font-size="14.5" class="muted">暫不入庫 73%・待補讀 1%</text><rect x="540" y="172" width="520" height="84" rx="10" fill="#fffdf9" stroke="#e4dfd4"></rect><rect x="540" y="172" width="7" height="84" rx="3" fill="#2e6e5c"></rect><text x="564" y="204" font-size="19" font-weight="700"><tspan>可用知識來源  </tspan><tspan fill="#2e6e5c" font-weight="900" font-size="22">484</tspan></text><text x="564" y="228" font-size="15" class="">內容本身就是知識 → 全部進教育訓練，18 份也進講綱</text><text x="564" y="249" font-size="14" class="muted">研究出版 206・服務案例 129・計畫制度 70・教育課程 69・平台 10</text><rect x="540" y="268" width="520" height="84" rx="10" fill="#fffdf9" stroke="#e4dfd4"></rect><rect x="540" y="268" width="7" height="84" rx="3" fill="#3c689b"></rect><text x="564" y="300" font-size="19" font-weight="700"><tspan>輔助參考  </tspan><tspan fill="#3c689b" font-weight="900" font-size="22">452</tspan></text><text x="564" y="324" font-size="15" class="">有參考價值，但綁特定年度／活動，整包放會誤導</text><text x="564" y="345" font-size="14" class="muted">講師資料表、公文、會議文件、宣傳頁｜17 份已進講綱</text><rect x="540" y="364" width="520" height="330" rx="10" fill="#fffdf9" stroke="#e4dfd4"></rect><rect x="540" y="364" width="7" height="330" rx="3" fill="#a39d91"></rect><text x="564" y="396" font-size="19" font-weight="700"><tspan>暫不入庫  </tspan><tspan fill="#6e685c" font-weight="900" font-size="22">2,588</tspan></text><text x="564" y="420" font-size="15" class="">不適合給 Agent 讀（沒文字、重複、個資），原檔保留</text><text x="564" y="461" font-size="14">照片影音設計</text><rect x="700" y="450" width="270" height="9" rx="4.5" fill="#eeebe4"></rect><rect x="700" y="450" width="270" height="9" rx="4.5" fill="#a39d91"></rect><text x="1036" y="461" font-size="14" font-weight="700" text-anchor="end">1,475</text><text x="564" y="488" font-size="14">重複版本</text><rect x="700" y="477" width="270" height="9" rx="4.5" fill="#eeebe4"></rect><rect x="700" y="477" width="92.44067796610169" height="9" rx="4.5" fill="#a39d91"></rect><text x="1036" y="488" font-size="14" font-weight="700" text-anchor="end">505</text><text x="564" y="515" font-size="14">行政憑證</text><rect x="700" y="504" width="270" height="9" rx="4.5" fill="#eeebe4"></rect><rect x="700" y="504" width="45.213559322033895" height="9" rx="4.5" fill="#a39d91"></rect><text x="1036" y="515" font-size="14" font-weight="700" text-anchor="end">247</text><text x="564" y="542" font-size="14">逐筆回覆與名冊</text><rect x="700" y="531" width="270" height="9" rx="4.5" fill="#eeebe4"></rect><rect x="700" y="531" width="42.65084745762712" height="9" rx="4.5" fill="#a39d91"></rect><text x="1036" y="542" font-size="14" font-weight="700" text-anchor="end">233</text><text x="564" y="569" font-size="14">壓縮封存檔</text><rect x="700" y="558" width="270" height="9" rx="4.5" fill="#eeebe4"></rect><rect x="700" y="558" width="10.616949152542372" height="9" rx="4.5" fill="#a39d91"></rect><text x="1036" y="569" font-size="14" font-weight="700" text-anchor="end">58</text><text x="564" y="596" font-size="14">QR 圖</text><rect x="700" y="585" width="270" height="9" rx="4.5" fill="#eeebe4"></rect><rect x="700" y="585" width="8.786440677966102" height="9" rx="4.5" fill="#a39d91"></rect><text x="1036" y="596" font-size="14" font-weight="700" text-anchor="end">48</text><text x="564" y="623" font-size="14">空白或測試</text><rect x="700" y="612" width="270" height="9" rx="4.5" fill="#eeebe4"></rect><rect x="700" y="612" width="3" height="9" rx="4.5" fill="#a39d91"></rect><text x="1036" y="623" font-size="14" font-weight="700" text-anchor="end">12</text><text x="564" y="650" font-size="14">原始數據表</text><rect x="700" y="639" width="270" height="9" rx="4.5" fill="#eeebe4"></rect><rect x="700" y="639" width="3" height="9" rx="4.5" fill="#a39d91"></rect><text x="1036" y="650" font-size="14" font-weight="700" text-anchor="end">7</text><text x="564" y="677" font-size="14">一次性通知</text><rect x="700" y="666" width="270" height="9" rx="4.5" fill="#eeebe4"></rect><rect x="700" y="666" width="3" height="9" rx="4.5" fill="#a39d91"></rect><text x="1036" y="677" font-size="14" font-weight="700" text-anchor="end">3</text><rect x="540" y="706" width="520" height="84" rx="10" fill="#fffdf9" stroke="#e4dfd4"></rect><rect x="540" y="706" width="7" height="84" rx="3" fill="#b67d22"></rect><text x="564" y="738" font-size="19" font-weight="700"><tspan>待補讀  </tspan><tspan fill="#94621a" font-weight="900" font-size="22">30</tspan></text><text x="564" y="762" font-size="15" class="">有密碼打不開，還不能判斷 → 拿到密碼再判定</text><text x="564" y="783" font-size="14" class="muted">多為志工名單、高鐵票、領據（Excel 17・PDF 13）</text><rect x="540" y="802" width="520" height="84" rx="10" fill="#fffdf9" stroke="#e4dfd4"></rect><rect x="540" y="802" width="7" height="84" rx="3" fill="#7a5a93"></rect><text x="564" y="834" font-size="19" font-weight="700"><tspan>Ivy 可用  </tspan><tspan fill="#7a5a93" font-weight="900" font-size="22">117</tspan></text><text x="564" y="858" font-size="15" class="">社工與財務管理課程講義</text><text x="564" y="879" font-size="14" class="muted">104 份進教育訓練・98 份進講綱（85 份兩邊共用）</text><rect x="540" y="898" width="520" height="52" rx="10" fill="#fffdf9" stroke="#e4dfd4"></rect><rect x="540" y="898" width="7" height="52" rx="3" fill="#a39d91"></rect><text x="564" y="930" font-size="17" font-weight="700"><tspan>Ivy 暫不入庫 </tspan><tspan fill="#6e685c" font-weight="900">33</tspan><tspan dx="14" font-size="15" font-weight="400" fill="#474d48">重複或較舊版本 30・價值較低 3</tspan></text><rect x="540" y="962" width="520" height="52" rx="10" fill="#fffdf9" stroke="#e4dfd4"></rect><rect x="540" y="962" width="7" height="52" rx="3" fill="#8a6a4a"></rect><text x="564" y="994" font-size="17" font-weight="700"><tspan>直接採用 </tspan><tspan fill="#8a6a4a" font-weight="900">2</tspan><tspan dx="14" font-size="15" font-weight="400" fill="#474d48">花蓮、南投兩份講綱範例</tspan></text><rect x="540" y="1026" width="520" height="52" rx="10" fill="#fffdf9" stroke="#e4dfd4"></rect><rect x="540" y="1026" width="7" height="52" rx="3" fill="#8a6a4a"></rect><text x="564" y="1058" font-size="17" font-weight="700"><tspan>整理成引導稿 </tspan><tspan fill="#8a6a4a" font-weight="900">2</tspan><tspan dx="14" font-size="15" font-weight="400" fill="#474d48">表單欄位說明＋補問引導（原檔只供核對）</tspan></text><rect x="1290" y="179.78" width="16" height="76.44" rx="3" fill="#1c2220"></rect><rect x="1320" y="172" width="420" height="92" rx="12" fill="#1c2220"></rect><text x="1342" y="206" font-size="19" font-weight="700" fill="#fffdf9"><tspan fill="#fffdf9">教育訓練 Agent</tspan></text><text x="1718" y="214" text-anchor="end" class="serif" font-size="40" fill="#fffdf9">588</text><text x="1342" y="230" font-size="14" fill="#e6e8e3">D 槽可用 484＋Ivy 104</text><text x="1342" y="251" font-size="13.5" fill="#bfc3bc">📁 02_直接匯入Agent／教育訓練</text><rect x="1290" y="315.225" width="16" height="17.55" rx="3" fill="#1c2220"></rect><rect x="1320" y="278" width="420" height="92" rx="12" fill="#1c2220"></rect><text x="1342" y="312" font-size="19" font-weight="700" fill="#fffdf9"><tspan fill="#fffdf9">講綱 Agent</tspan></text><text x="1718" y="320" text-anchor="end" class="serif" font-size="40" fill="#fffdf9">135</text><text x="1342" y="336" font-size="14" fill="#e6e8e3">Ivy 98＋D 槽 35＋範例 2</text><text x="1342" y="357" font-size="13.5" fill="#bfc3bc">📁 02_直接匯入Agent／講綱</text><rect x="1290" y="427" width="16" height="6" rx="3" fill="#1c2220"></rect><rect x="1320" y="384" width="420" height="92" rx="12" fill="#1c2220"></rect><text x="1342" y="418" font-size="19" font-weight="700" fill="#fffdf9"><tspan fill="#fffdf9">單位邀課申請 Agent</tspan></text><text x="1718" y="426" text-anchor="end" class="serif" font-size="40" fill="#fffdf9">2</text><text x="1342" y="442" font-size="14" fill="#e6e8e3">2 份引導稿</text><text x="1342" y="463" font-size="13.5" fill="#bfc3bc">📁 02_直接匯入Agent／單位邀課申請</text><rect x="1290" y="526" width="16" height="397.28000000000003" rx="3" fill="#a39d91"></rect><text x="1324" y="714.64" font-size="19" font-weight="700"><tspan>保留在資料夾，不匯入  </tspan><tspan fill="#6e685c" font-weight="900" font-size="22">3,056</tspan></text><text x="1324" y="740.64" font-size="14" class="muted">輔助 435＋暫不入庫 2,588＋Ivy 33</text><text x="1324" y="762.64" font-size="14" class="muted">沒有刪任何檔案，之後需要隨時可以再挑</text><rect x="1290" y="898" width="16" height="6" rx="3" fill="#b67d22"></rect><text x="1324" y="907" font-size="19" font-weight="700"><tspan>等密碼再判定  </tspan><tspan fill="#94621a" font-weight="900" font-size="22">30</tspan></text><text x="1740" y="502" text-anchor="end" font-size="14.5" fill="#94621a" font-weight="700">⚠ 588、135、2 不能相加：同一份可同時進兩個 Agent</text><line x1="60" x2="1740" y1="1112" y2="1112" stroke="#e4dfd4"></line><text x="60" y="1146" font-size="15" font-weight="700">要匯入？</text><text x="60" y="1172" font-size="15" class="muted">只開 02_直接匯入Agent 底下三個「供匯入」資料夾</text><text x="630" y="1146" font-size="15" font-weight="700">原檔安全嗎？</text><text x="630" y="1172" font-size="15" class="muted">D 槽原檔沒搬動，桌面另有完整副本；沒有刪任何檔案</text><text x="1200" y="1146" font-size="15" font-weight="700">沒進 Agent 的？</text><text x="1200" y="1172" font-size="15" class="muted">全部留在 01_原檔分類 與 Ivy 資料夾，之後可再挑</text></svg></div></div>
+      <div class="ov-dl"><button type="button" id="ovZoom">放大看 ⤢</button>　<a href="從原始檔到Agent_一張圖看懂.png" download>下載這張圖（PNG）</a></div>
+      <div class="flow-notes">
+        <div><b>大部分不會進 Agent。</b>照片、重複版本、名冊這類檔案佔了七成，放進去反而干擾回答。</div>
+        <div><b>同一份可以進兩個 Agent。</b>例如 Ivy 有 85 份同時給教育訓練和講綱用。</div>
+        <div><b>邀課申請比較特別。</b>不是直接放原檔，而是把表單和回覆整理成 2 份引導稿。</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="cats">
+    <div class="sec-no">02</div>
+    <h2 class="sec-title">四種分類，各是什麼意思</h2>
+    <p class="sec-lead">D 槽每份檔案都被放進其中一類。重點是：<strong>沒有任何檔案被刪掉</strong>，分類只決定「現在要不要給 Agent 用」。</p>
+    <div class="cats">
+
+      <article class="cat" style="--c:var(--use);--cs:var(--use-soft)">
+        <div class="cat-top">
+          <div><h3>可用知識來源</h3><span class="tag">已匯入</span></div>
+          <div class="big num">484<small>佔 14%</small></div>
+        </div>
+        <p class="what">內容本身就是知識，可以直接回答問題。全部放進教育訓練 Agent，其中 18 份也放進講綱。</p>
+        <div class="label">裡面有什麼</div>
+        <div class="mini" id="mini-use"></div>
+      </article>
+
+      <article class="cat" style="--c:var(--ref);--cs:var(--ref-soft)">
+        <div class="cat-top">
+          <div><h3>輔助參考</h3><span class="tag">部分匯入</span></div>
+          <div class="big num">452<small>佔 13%</small></div>
+        </div>
+        <p class="what">有參考價值，但綁著特定年度、活動或對象。整包放進去，Agent 可能把「某一年的安排」當成通用答案。</p>
+        <div class="label">例如</div>
+        <div class="chips"><span>講師資料表</span><span>邀請與招生公文</span><span>會議紀錄、委託文件</span><span>宣傳頁面</span><span>課綱附表</span></div>
+        <div class="label">目前去向</div>
+        <div class="split2"><i style="flex:17;background:var(--ref)"></i><i style="flex:435;background:var(--hold-soft)"></i></div>
+        <div class="split2-l"><span><b>17 份</b> 已進講綱（16 份講師資料表＋1 份訓練說明）</span><span><b>435 份</b> 先保留</span></div>
+        <p class="next">不是「不要」，也不是「沒讀」。之後哪個 Agent 需要，再從這裡挑。</p>
+      </article>
+
+      <article class="cat" style="--c:var(--hold);--cs:var(--hold-soft)">
+        <div class="cat-top">
+          <div><h3>暫不入庫</h3><span class="tag">不匯入・原檔保留</span></div>
+          <div class="big num">2,588<small>佔 73%</small></div>
+        </div>
+        <p class="what">不適合讓 Agent 讀的檔案：沒有文字內容、重複，或是個人資料。</p>
+        <div class="label">裡面有什麼</div>
+        <div class="mini" id="mini-hold"></div>
+      </article>
+
+      <article class="cat" style="--c:var(--lock);--cs:var(--lock-soft)">
+        <div class="cat-top">
+          <div><h3>待補讀</h3><span class="tag">有密碼・打不開</span></div>
+          <div class="big num">30<small>佔 1%</small></div>
+        </div>
+        <p class="what">這 30 份都設了密碼，內容還讀不到，所以<strong>還不能判斷</strong>該分到哪一類。</p>
+        <div class="label">從檔名看，大概是</div>
+        <div class="chips"><span>志工名單、時數結算</span><span>高鐵票、領據</span><span>研討會資料</span><span>保險報價與要保書</span></div>
+        <div class="label">格式</div>
+        <div class="split2"><i style="flex:17;background:var(--lock)"></i><i style="flex:13;background:color-mix(in srgb,var(--lock) 45%,transparent)"></i></div>
+        <div class="split2-l"><span><b>17 份</b> Excel</span><span><b>13 份</b> PDF</span></div>
+        <p class="next">拿到密碼後再打開判定。從檔名看多半是行政資料，可能最後也是暫不入庫。</p>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="block" id="agents">
+    <div class="sec-no">03</div>
+    <h2 class="sec-title">三個 Agent 各放了什麼</h2>
+    <p class="sec-lead">要匯入時，直接把下面這三個資料夾的檔案全部放進去就好。</p>
+    <div class="agents" id="agentCards"></div>
+    <div class="warn"><span class="ic">!</span><div><strong>588、135、2 不能加起來當總數。</strong>同一份檔案可以同時放進兩個 Agent：Ivy 有 85 份兩邊都有，講綱裡的 18 份 D 槽檔案也在教育訓練裡。</div></div>
+  </section>
+
+  <section class="block" id="tree">
+    <div class="sec-no">04</div>
+    <h2 class="sec-title">資料夾結構</h2>
+    <p class="sec-lead">點開每個資料夾，看底下分了什麼、各有幾份。資料夾名稱可以直接點開。</p>
+    <div class="tree">
+      <div class="t-root"><b>素菁\AI_RAG重新整理_20261101</b>　（桌面）</div>
+      <div id="treeBody"></div>
+    </div>
+  </section>
+
+</main>
+
+<div class="zoom" id="zoom"></div><button type="button" class="zoom-x" id="zoomX">關閉 ✕</button>
+<footer class="wrap">
+  數字於 2026-11-03 依實際資料夾逐一清點。原檔與整理檔都可能含個人資料，分類不代表已去識別。<br>
+  逐檔清單：<a href="../../開始這裡.html">開始這裡.html</a>　·　表格版：<a href="從原始檔到Agent_整理導覽.xlsx">Excel</a>
+</footer>
+
+<script>
+const fmt = n => n.toLocaleString('en-US');
+const ROOT = '../../';
+
+/* ---------- chart zoom ---------- */
+const zoom = document.getElementById("zoom");
+const openZoom = () => {
+  if (!zoom.firstChild) { const w = document.querySelector(".ov-wrap").cloneNode(true); w.querySelector("svg").removeAttribute("id"); w.querySelector("svg").classList.add("ovz"); zoom.appendChild(w); }
+  zoom.classList.add("on"); document.body.style.overflow = "hidden";
+};
+const closeZoom = () => { zoom.classList.remove("on"); document.body.style.overflow = ""; };
+document.querySelector(".flow-card .ov-wrap").addEventListener("click", openZoom);
+document.getElementById("ovZoom").addEventListener("click", openZoom);
+zoom.addEventListener("click", closeZoom);
+document.getElementById("zoomX").addEventListener("click", closeZoom);
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeZoom(); });
+
+/* ---------- hero bar ---------- */
+const pools = [
+  { name: '可用知識來源', n: 484, c: 'var(--use)', note: '直接當知識用' },
+  { name: '輔助參考', n: 452, c: 'var(--ref)', note: '有參考價值，挑著用' },
+  { name: '暫不入庫', n: 2588, c: 'var(--hold)', note: '照片、重複、名冊等' },
+  { name: '待補讀', n: 30, c: 'var(--lock)', note: '有密碼，還打不開' },
+];
+document.getElementById('heroBar').innerHTML = pools.map(p => `<i style="flex:${p.n};background:${p.c}" title="${p.name} ${fmt(p.n)}"></i>`).join('');
+document.getElementById('heroLegend').innerHTML = pools.map(p => `<div><span class="dot" style="background:${p.c}"></span>${p.name}<b class="num">${fmt(p.n)}</b>${p.note}</div>`).join('');
+
+/* ---------- category mini bars ---------- */
+function mini(id, rows) {
+  const max = Math.max(...rows.map(r => r[1]));
+  document.getElementById(id).innerHTML = rows.map(([name, n, ex]) =>
+    `<div class="mini-row" title="${ex || ''}"><span>${name}</span><span class="track"><i style="width:${Math.max(n / max * 100, 1.5)}%"></i></span><span class="n num">${fmt(n)}</span></div>`).join('');
+}
+mini('mini-use', [
+  ['研究與出版', 206, '季刊、研究評估、實務文章'],
+  ['服務與案例', 129, '個案教學、財務諮詢方法'],
+  ['計畫合作與制度', 70, '計畫成果、制度流程'],
+  ['教育與課程', 69, '教材、課程講綱'],
+  ['平台與對外資訊', 10, '平台介紹、資安'],
+]);
+mini('mini-hold', [
+  ['照片影音設計', 1475, '活動照片、影片、設計稿'],
+  ['重複版本', 505, '同一份的舊版或校對版'],
+  ['行政憑證', 247, '領據、證明、流程表'],
+  ['逐筆回覆名冊', 233, '問卷回覆、簽到、名單'],
+  ['壓縮封存檔', 58, 'ZIP、系統檔'],
+  ['QR 圖', 48, '只有連結的圖片'],
+  ['空白或測試', 12, ''],
+  ['原始數據表', 7, '逐列數據'],
+  ['一次性通知', 3, '行前通知等'],
+]);
+
+/* ---------- agent cards ---------- */
+const agents = [
+  { k: 'AGENT 1', name: '教育訓練', n: 588, unit: '份',
+    parts: [['D 槽・可用知識來源', 484, 'var(--use)'], ['Ivy 新來源', 104, 'var(--ivy)']],
+    path: '02_直接匯入Agent／教育訓練／00_原檔_供匯入', href: '02_直接匯入Agent/教育訓練/00_原檔_供匯入/' },
+  { k: 'AGENT 2', name: '講綱', n: 135, unit: '份',
+    parts: [['Ivy 新來源', 98, 'var(--ivy)'], ['D 槽・可用知識來源', 18, 'var(--use)'], ['D 槽・輔助參考', 17, 'var(--ref)'], ['先前提供的講綱範例', 2, 'var(--ext)']],
+    path: '02_直接匯入Agent／講綱／00_原檔_供匯入', href: '02_直接匯入Agent/講綱/00_原檔_供匯入/' },
+  { k: 'AGENT 3', name: '單位邀課申請', n: 2, unit: '份引導稿',
+    parts: [['表單欄位說明', 1, 'var(--ext)'], ['補問引導', 1, 'var(--ext)']],
+    note: '由邀課表單與歷年回覆 Excel 整理而成；原檔放在旁邊的資料夾供核對，不匯入。',
+    path: '02_直接匯入Agent／單位邀課申請／01_填表與補問引導_供匯入', href: '02_直接匯入Agent/單位邀課申請/01_填表與補問引導_供匯入/' },
+];
+document.getElementById('agentCards').innerHTML = agents.map(a => `
+  <article class="agent">
+    <div class="k">${a.k}</div>
+    <h3>${a.name}</h3>
+    <div class="big num">${fmt(a.n)}<small>${a.unit}</small></div>
+    <div class="comp">${a.parts.map(p => `<i style="flex:${p[1]};background:${p[2]}"></i>`).join('')}</div>
+    <ul>${a.parts.map(p => `<li><span class="dot" style="background:${p[2]}"></span>${p[0]}<span class="n num">${fmt(p[1])}</span></li>`).join('')}</ul>
+    ${a.note ? `<p style="font-size:13.5px;opacity:.7;margin-top:12px;line-height:1.6">${a.note}</p>` : ''}
+    <div class="path">${a.path}</div>
+    <a class="open" href="${encodeURI(ROOT + a.href)}">開啟資料夾 ↗</a>
+  </article>`).join('');
+
+/* ---------- folder tree ---------- */
+const tree = [
+  { ico: '01', name: '01_原檔分類_每份只放一次', desc: 'D 槽每份檔案的分類副本，一份只放一處', count: '3,554 份', c: 'var(--use)', cs: 'var(--use-soft)', href: '01_原檔分類_每份只放一次/',
+    subs: [
+      ['01_可用知識來源', 484, '可以直接當知識用', '01_可用知識來源/', 'var(--use)', [
+        ['研究與出版', 206, '季刊、研究評估、實務文章'], ['服務與案例', 129, '個案教學、財務諮詢方法'], ['計畫合作與制度', 70, '計畫成果、制度流程、合作資源'], ['教育與課程', 69, '教材、課程講綱'], ['平台與對外資訊', 10, '平台介紹、資安']]],
+      ['02_輔助參考', 452, '有參考價值，挑著用', '02_輔助參考/', 'var(--ref)', [
+        ['行政與素材', 136, '活動行政、公文'], ['計畫合作與制度', 131, '會議、委託、計畫文件'], ['教育與課程', 92, '講師資料表、課綱附表'], ['平台與對外資訊', 32, '宣傳頁面、平台數據'], ['研究與出版', 32, '文章與研究背景'], ['服務與案例', 29, '服務方法、案例背景']]],
+      ['03_暫不入庫', 2588, '不給 Agent，原檔保留', '03_暫不入庫/', 'var(--hold)', [
+        ['照片影音設計', 1475, '活動照片、影片、設計稿'], ['重複版本', 505, '舊版、校對版'], ['行政憑證', 247, '領據、證明、流程表'], ['逐筆回覆與名冊', 233, '問卷回覆、簽到、名單'], ['封存與打包', 58, 'ZIP、系統檔'], ['QR 導流圖', 48, '只有連結的圖片'], ['空白測試低價值', 12, '空白或測試檔'], ['原始分析資料表', 7, '逐列數據'], ['一次性通知', 3, '行前通知等']]],
+      ['04_待補讀', 30, '有密碼，還打不開', '04_待補讀/需密碼/', 'var(--lock)', []],
+    ] },
+  { ico: '02', name: '02_直接匯入Agent', star: '匯入看這裡', desc: '三個 Agent 要匯入的檔案都在這', count: '3 個 Agent', c: 'var(--agent)', cs: 'var(--hold-soft)', href: '02_直接匯入Agent/', open: true,
+    subs: [
+      ['教育訓練／00_原檔_供匯入', 588, 'D 槽可用 484＋Ivy 104', '教育訓練/00_原檔_供匯入/', 'var(--use)'],
+      ['講綱／00_原檔_供匯入', 135, 'Ivy 98＋D 槽 35＋範例 2', '講綱/00_原檔_供匯入/', 'var(--use)'],
+      ['單位邀課申請／01_填表與補問引導_供匯入', 2, '2 份整理好的引導稿', '單位邀課申請/01_填表與補問引導_供匯入/', 'var(--use)'],
+      ['單位邀課申請／00_來源原檔_供核對_暫不匯入', 2, '表單與回覆原檔，只供核對', '單位邀課申請/00_來源原檔_供核對_暫不匯入/', 'var(--hold)'],
+    ] },
+  { ico: '03', name: '03_外部Ivy_新來源', desc: 'Ivy 兩個雲端資料夾的檔案，獨立於 D 槽之外', count: '150 份', c: 'var(--ivy)', cs: 'var(--ivy-soft)', href: '03_外部Ivy_新來源/',
+    subs: [
+      ['00_下載原件_完整保留', 150, '全部原件（社工 114、財務管理學習 36）', '00_下載原件_完整保留/', 'var(--ivy)'],
+      ['01_暫不入庫_另放', 33, '重複或較舊 30、價值較低 3', '01_暫不入庫_另放/', 'var(--hold)'],
+      ['03_舊PPT格式備用', 32, '可用檔的轉檔版，原檔打不開時才用', '03_舊PPT格式備用/', 'var(--hold)'],
+      ['04_受控衍生檔', 4, '可用檔的整理稿＋說明', '04_受控衍生檔/', 'var(--hold)'],
+    ] },
+  { ico: '90', name: '90_進階資料_暫不匯入', desc: '早期萃取的文字、判定清單；不是新來源，現在用不到', count: '1,556 個', c: 'var(--hold)', cs: 'var(--hold-soft)', href: '90_進階資料_暫不匯入/',
+    subs: [
+      ['99_來源與判定', 951, '逐份分類清單與判定紀錄', '99_來源與判定/', 'var(--hold)'],
+      ['Agent萃取文字與參考卡', 604, '三個 Agent 的早期萃取版本', 'Agent萃取文字與參考卡/', 'var(--hold)'],
+    ] },
+  { ico: '—', name: '_建置／outputs', desc: '整理用的程式、中間檔，以及這份導覽', count: '工作檔', c: 'var(--faint)', cs: 'var(--hold-soft)', href: 'outputs/', subs: [] },
+];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+document.getElementById('treeBody').innerHTML = tree.map(t => {
+  const max = Math.max(1, ...t.subs.map(s => s[1]));
+  const rows = t.subs.map(([nm, n, ds, href, c, kids]) => {
+    const link = encodeURI(ROOT + t.href + href);
+    const kidRows = (kids || []).map(([knm, kn, kds]) => `
+      <div class="t-sub indent" style="--c:${c}"><span class="nm">└ ${esc(knm)}</span><span class="ds">${esc(kds)}</span><span class="ct num">${fmt(kn)}</span></div>`).join('');
+    return `<div class="t-sub" style="--c:${c}"><span class="nm"><a href="${link}">${esc(nm)}</a></span><span class="ds">${esc(ds)}</span><span class="ct num">${fmt(n)}</span><span class="tr"><i style="width:${Math.max(n / max * 100, .8)}%"></i></span></div>${kidRows}`;
+  }).join('');
+  return `<details class="t-item" style="--c:${t.c};--cs:${t.cs}" ${t.open ? 'open' : ''}>
+    <summary><span class="t-ico">${t.ico}</span><span class="t-name">${esc(t.name)}${t.star ? `<span class="t-star">${t.star}</span>` : ''}<small>${esc(t.desc)}</small></span><span class="t-count num">${t.count}</span><span class="t-arrow">▶</span></summary>
+    <div class="t-body">${rows}<a class="t-open" href="${encodeURI(ROOT + t.href)}">開啟 ${esc(t.name)} ↗</a></div>
+  </details>`;
+}).join('');
+
+</script>
+</body>
+</html>
